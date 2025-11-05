@@ -1,0 +1,32 @@
+.toast-success {
+  background-color: #4caf50 !important; /* xanh lá cây */
+  color: #fff !important;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.toast-error {
+  background-color: #f44336 !important; /* đỏ */
+  color: #fff !important;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.toast-warning {
+  background-color: #ff9800 !important; /* cam/vàng */
+  color: #fff !important;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.toast-success .Toastify__toast-icon svg {
+  fill: #fff !important; /* icon màu trắng */
+}
+
+.toast-error .Toastify__toast-icon svg {
+  fill: #fff !important;
+}
+
+.toast-warning .Toastify__toast-icon svg {
+  fill: #fff !important;
+}

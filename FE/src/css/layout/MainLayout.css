@@ -1,0 +1,15 @@
+/* Khi item được chọn (active) */
+.custom-menu .ant-menu-item-selected {
+  background-color: #3aa999 !important; /* màu chủ đạo */
+}
+
+.ant-menu-dark.ant-menu-inline .ant-menu-sub,
+.ant-menu-dark > .ant-menu.ant-menu-inline .ant-menu-sub {
+  background: transparent !important;
+}
+
+/* .custom-menu .ant-menu-title-content {
+  white-space: normal !important;
+  word-break: break-word;
+  line-height: 1.3;
+} */
