@@ -2,10 +2,8 @@ import { useCallback, useState } from "react";
 import { LoginAuth } from "../../../api/auth/auth.api";
 import type { IAuthLogin } from "../../../types/TypeAuth";
 import { useDispatch } from "react-redux";
-import { parseToken } from "../../../untils/ParseToken";
 import { showError, showSuccess, showWarning } from "../../../untils/ShowToast";
 import { setUserState } from "../../../features/slices/user.slice";
-import { setAppState } from "../../../features/slices/app.slice";
 import { useNavigate } from "react-router-dom";
 import { ROLE } from "../../../constants";
 import { queryGetInfoUser } from "../../../api/user/user.query";
@@ -59,26 +57,10 @@ export const useAuth = () => {
 
     try {
       const res = await LoginAuth(value);
-
       if (res?.success) {
-        const infoUser: any = await parseToken(res?.data?.token);
-
-        if (!infoUser) {
-          showError("Không giải mã được token");
-          return;
-        }
-
-        const dataAppDispatch = {
-          token: res?.data?.token,
-          role_id: infoUser.Role, // lưu ý FE bạn nên để lowercase
-        };
-
-        localStorage.setItem("access_token", res?.data?.token);
-        initUserInfo();
-        dispatch(setAppState(dataAppDispatch));
-
+        console.log("🚀 ~ handleLogin ~ res:", res);
         showSuccess("Đăng nhập thành công");
-        handleSwitchRouter(infoUser.Role);
+        // handleSwitchRouter(infoUser.Role);
       } else {
         showWarning(res?.message);
       }

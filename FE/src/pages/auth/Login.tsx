@@ -5,7 +5,7 @@ import { COLOR_DEFAULT } from "../../constants";
 import { useAuth } from "./hook/useLogin";
 import AuthLayout from "../../components/layout/AuthLayout";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Login = () => {
   const { loading, handleLogin } = useAuth();
@@ -24,7 +24,7 @@ const Login = () => {
       >
         Đăng nhập
       </Title>
-      <Typography.Text
+      <Text
         style={{
           display: "block",
           textAlign: "center",
@@ -33,10 +33,14 @@ const Login = () => {
         }}
       >
         Chào mừng bạn quay lại 👋
-      </Typography.Text>
+      </Text>
 
       {/* Form */}
-      <Form layout="vertical" onFinish={handleLogin}>
+      <Form
+        layout="vertical"
+        onFinish={handleLogin}
+        style={{ maxWidth: 400, margin: "0 auto" }}
+      >
         <Form.Item
           label="Email"
           name="email"
@@ -65,8 +69,11 @@ const Login = () => {
         </Form.Item>
 
         <Flex justify="space-between" style={{ marginBottom: 16 }}>
+          <Link style={{ color: COLOR_DEFAULT }} to="/auth/register">
+            Đăng ký tài khoản
+          </Link>
           <Link style={{ color: COLOR_DEFAULT }} to="/auth/forgot-password">
-            Quên mật khẩu?
+            Quên mật khẩu
           </Link>
         </Flex>
 
@@ -76,7 +83,11 @@ const Login = () => {
             htmlType="submit"
             size="large"
             block
-            style={{ borderRadius: 8, backgroundColor: COLOR_DEFAULT }}
+            style={{
+              borderRadius: 8,
+              backgroundColor: COLOR_DEFAULT,
+              fontWeight: 600,
+            }}
             loading={loading}
           >
             Tiếp tục
