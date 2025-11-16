@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpg|jpeg|png|webp|pdf|doc|docx/;
+  const allowedTypes = /jpg|png|pdf|doc|docx/;
   const ext = path.extname(file.originalname).slice(1).toLowerCase();
 
   if (allowedTypes.test(ext)) {

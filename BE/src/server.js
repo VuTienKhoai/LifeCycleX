@@ -11,6 +11,7 @@ async function startServer() {
 
   app.listen(PORT, () => {
     console.log(`🇻🇳 Server running at http://localhost:${PORT}`);
+    console.log('🔧 Truy cập Admin tại http://localhost:5000/admin.html');
   });
 }
 startServer();

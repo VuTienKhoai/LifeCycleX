@@ -4,7 +4,8 @@ import ManufacturerRoutes  from './routers/Business/manufacturer/manufacturer.ro
 import ServiceCenterRoutes  from './routers/Business/ServiceCenter/serviceCenter.routes.js';
 import SellerRoutes  from './routers/Business/Seller/seller.routes.js';
 import ProductRoutes from './routers/Business/product/product.routes.js';
-import ReviewRoutesn from './routers/admin/review.routes.js';
+import ReviewRoutes from './routers/admin/review.routes.js';
+import CustomerRoutes from './routers/Business/customer/customer.routes.js';
 
 import { loggerMiddleware } from './middlewares/logger.middleware.js';
 import { responseTimeMiddleware } from './middlewares/responseTime.middleware.js';
@@ -21,6 +22,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   process.env.FRONTEND_URL,   
   process.env.FRONTEND_URL_ADMIN,
+  'http://localhost:5000',
 ];
 
 app.use(cors({
@@ -42,14 +44,15 @@ app.use(passport.initialize());
 
 app.use('/auth', authRoutes);
 //api for admin
-app.use('/review',authMiddleware(['ADMIN']), ReviewRoutesn);
+app.use('/review',authMiddleware(['ADMIN']), ReviewRoutes);
 
 //api cho những role còn lại
-app.use('/manufacturer',authMiddleware(['CUSTOMER', 'MANUFACTURER', 'SELLER', 'SERVICE_CENTER']), ManufacturerRoutes);
-app.use('/service-center',authMiddleware(['CUSTOMER', 'MANUFACTURER', 'SELLER', 'SERVICE_CENTER']), ServiceCenterRoutes);
-app.use('/seller',authMiddleware(['CUSTOMER', 'MANUFACTURER', 'SELLER', 'SERVICE_CENTER']), SellerRoutes);
+app.use('/customer',authMiddleware(['CUSTOMER']), CustomerRoutes);
+app.use('/manufacturer',authMiddleware(['CUSTOMER', 'MANUFACTURER']), ManufacturerRoutes);
+app.use('/service-center',authMiddleware(['CUSTOMER','SERVICE_CENTER']), ServiceCenterRoutes);
+app.use('/seller',authMiddleware(['CUSTOMER','SELLER',]), SellerRoutes);
 
-app.use('/product',authMiddleware(['MANUFACTURER']), ProductRoutes);
+app.use('/product', ProductRoutes);
 app.use(errorMiddleware);
 
 export default app;

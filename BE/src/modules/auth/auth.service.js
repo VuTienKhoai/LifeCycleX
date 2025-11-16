@@ -39,6 +39,12 @@ class AuthService {
         expiresAt: new Date(Date.now() + 2592000000) 
       }
     });
+    await prisma.customer.create({
+      data: {
+        userId: newUser.id,
+        fullName:newUser.name,
+      }
+    });
     return newUser;
   }
   async verifyEmail(token) {
@@ -146,6 +152,11 @@ class AuthService {
     if(!user) throw new ServerException('User not found', 404);
     console.log(user);
     return user;
+  }
+  async logout(userId) {
+  // Xoá token trong Redis
+    await redis.del(`auth:user:${userId}`);
+    return { message: 'Logout successful' };
   }
 }
 

@@ -37,4 +37,37 @@ export class ServiceCenterService {
       if (tempPath) await unlink(tempPath).catch(() => {});
     }
   }
+  async getAllProduct(userId, query) {
+    const serviceCenter = await prisma.serviceCenter.findUnique({where:{userId:userId}});
+    if(!serviceCenter) throw new ClientException('Đại lý bán hàng không tồn tại',404);
+    
+    const products = await prisma.product.findMany({
+      skip: query.offset,
+      take: query.limit,
+      orderBy: { createdAt: 'desc' },
+    });
+    const filteredProducts = products.filter(p => p.transaction?.owner?.id === serviceCenter.id && p.transaction?.owner?.role === 'SERVICE_CENTER');
+
+    const allProducts = await prisma.product.findMany({
+    });
+    const totalFiltered = allProducts.filter(p => p.transaction?.owner?.id=== serviceCenter.id && p.transaction?.owner?.role === 'SERVICE_CENTER' ).length;
+    const totalPages = Math.ceil(totalFiltered / query.limit);
+
+    return {
+      data: filteredProducts,
+      pagination: {
+        total: totalFiltered,
+        totalPages,
+        limit: query.limit,
+        offset: query.offset,
+      },
+    };
+  }
+
+  async getAllCustomer(){
+    const customers = await prisma.user.findMany({
+      where: { roles: { has: 'CUSTOMER' } },
+    });
+    return customers;
+  }
 }

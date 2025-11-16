@@ -1,4 +1,4 @@
-import {RegisterDto,CreateProductDto} from './Manufacturer.dto.js';
+import {RegisterDto} from './Manufacturer.dto.js';
 import {ManufacturerService} from './Manufacturer.service.js';
 import { successResponse,errorResponse } from '../../../utils/response.js';
 
@@ -11,11 +11,18 @@ export class ManufacturerController {
       return errorResponse(res, error.message, error.status || 500);
     }
   }
-
-  async createProduct(req, res) {
+  async getAllProduct(req, res) {
     try {
-      const product = await new ManufacturerService().createProduct(new CreateProductDto(req.body), req.user.id, req.file);
-      return successResponse(res, product, 'Product created successfully', 201);
+      const products = await new ManufacturerService().getAllProduct(req.user.id, req.validatedQuery);
+      return successResponse(res, products, 'Products retrieved successfully', 200);
+    } catch (error) {
+      return errorResponse(res, error.message, error.status || 500);
+    }
+  }
+  async getAllSeller(req, res) {
+    try {
+      const sellers = await new ManufacturerService().getAllSeller();
+      return successResponse(res, sellers, 'Sellers retrieved successfully', 200);
     } catch (error) {
       return errorResponse(res, error.message, error.status || 500);
     }

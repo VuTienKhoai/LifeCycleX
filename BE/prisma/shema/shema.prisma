@@ -52,7 +52,6 @@ model Seller {
   taxId       String   
   businessLicenseFile String
   status   Status @default(pending)
-  soldProducts ProductSale[]
 }
 
 model ServiceCenter {
@@ -65,7 +64,6 @@ model ServiceCenter {
   taxId       String
   businessLicenseFile String
   status  Status @default(pending)
-  repairs ProductRepair[]
 }
 
 model Customer {
@@ -76,7 +74,6 @@ model Customer {
   user      User   @relation(fields: [userId], references: [id])
 
   ownedProducts Product[]
-  productSales  ProductSale[]
 }
 
 model Product {
@@ -92,41 +89,13 @@ model Product {
   manufacturer    Manufacturer @relation(fields: [manufacturerId], references: [id])
   currentOwner    Customer?    @relation(fields: [currentOwnerId], references: [id])
   approvalRequests ApprovalRequest[]
-  sales           ProductSale[]
-  repairs         ProductRepair[]
   histories       ProductHistory[]
-
+  transaction           Json
   blockchainHash  String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
 
-model ProductSale {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  productId   String   @db.ObjectId
-  sellerId    String   @db.ObjectId
-  customerId  String   @db.ObjectId
-  saleDate    DateTime @default(now())
-  txHash      String?
-
-  product     Product  @relation(fields: [productId], references: [id])
-  seller      Seller   @relation(fields: [sellerId], references: [id])
-  customer    Customer @relation(fields: [customerId], references: [id])
-  approvalRequests ApprovalRequest[]
-}
-
-model ProductRepair {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  productId      String   @db.ObjectId
-  serviceCenterId String  @db.ObjectId
-  description    String
-  repairDate     DateTime @default(now())
-  txHash         String?
-
-  product        Product        @relation(fields: [productId], references: [id])
-  serviceCenter  ServiceCenter  @relation(fields: [serviceCenterId], references: [id])
-  approvalRequests ApprovalRequest[]
-}
 
 model ProductHistory {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -136,7 +105,7 @@ model ProductHistory {
   timestamp    DateTime @default(now())
   performedBy  String   @db.ObjectId
   txHash       String?
-
+  transaction  Json
   product      Product  @relation(fields: [productId], references: [id])
   user         User     @relation(fields: [performedBy], references: [id])
   approvalRequests ApprovalRequest[]
@@ -203,10 +172,8 @@ model ApprovalRequest {
   createdAt        DateTime       @default(now())
   approvedAt       DateTime?
   description      String?
-  // Relations
+
   product          Product?        @relation(fields: [productId], references: [id])
-  productSale      ProductSale?    @relation(fields: [productSaleId], references: [id])
-  productRepair    ProductRepair?  @relation(fields: [productRepairId], references: [id])
   productHistory   ProductHistory? @relation(fields: [productHistoryId], references: [id])
 }
 enum RequestStatus {
