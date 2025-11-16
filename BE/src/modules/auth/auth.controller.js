@@ -59,5 +59,11 @@ class AuthController {
     const user = await authService.resetPassword(req.query.token, new ResetPasswordDto(req.body));
     return successResponse(res, user, 'Password reset successfully', 200);
   }
+
+  async logout(req, res) {
+    const result = await authService.logout(req.user.id);
+    res.clearCookie('authToken', authCookieOptions);
+    return successResponse(res, result, 'Logout successful', 200);
+  }
 }
 export default new AuthController();

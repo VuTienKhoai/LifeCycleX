@@ -11,4 +11,20 @@ export class SellerController {
       return errorResponse(res, error.message, error.status || 500);
     }
   }
+  async getAllProduct(req, res) {
+    try {
+      const products = await new SellerService().getAllProduct(req.user.id, req.validatedQuery);
+      return successResponse(res, products, 'Products retrieved successfully', 200);
+    } catch (error) {
+      return errorResponse(res, error.message, error.status || 500);
+    }
+  }
+  async getAllServiceCenter(req, res) {
+    try {
+      const serviceCenters = await new SellerService().getAllServiceCenter();
+      return successResponse(res, serviceCenters, 'Service Centers retrieved successfully', 200);
+    } catch (error) {
+      return errorResponse(res, error.message, error.status || 500);
+    }
+  }
 }

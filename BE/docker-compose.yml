@@ -11,6 +11,6 @@ services:
     command: redis-server --requirepass redis-password-of-pepnguyen-chidan
     volumes:
       - redis-data:/data
-
+  
 volumes:
   redis-data:
