@@ -6,3 +6,12 @@ export interface IMethodResult<T = any> {
   status?: number;
   totalRecord: number;
 }
+
+export interface IMethodResult<T = any> {
+  success: boolean;
+  data: T;
+  error?: string;
+  message: string;
+  status?: number;
+  totalRecord: number;
+}

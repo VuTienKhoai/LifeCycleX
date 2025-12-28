@@ -1,21 +1,44 @@
 import { Form, Input, Button, Typography, Image } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo/logo-hopitech.png";
 import { COLOR_DEFAULT } from "../../constants";
 import AuthLayout from "../../components/layout/AuthLayout";
+import { registerAuth } from "../../api/auth/auth.api";
+import { showError, showSuccess, showWarning } from "../../untils/ShowToast";
+import { useState } from "react";
 
 const { Title } = Typography;
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleRegister = (values: {
     email: string;
     password: string;
     fullName: string;
-    phoneNumber: string;
-    address: string;
   }) => {
-    console.log("🚀 ~ Register ~ values:", values);
-    // TODO: Gọi API register ở đây
+    if (!values) {
+      showWarning("Vui lòng điền đầy đủ thông tin");
+      return;
+    }
+    setLoading(true);
+    registerAuth(values)
+      .then((res) => {
+        if (res?.success) {
+          console.log("🚀 ~ handleRegister ~ res:", res);
+          showSuccess("Thông tin xác thực đã được gửi đến email của bạn!");
+          navigate("/");
+        } else {
+          showWarning(res?.message);
+        }
+      })
+      .catch((e) => {
+        console.log("Có lỗi xảy ra", e);
+        showError("Có lỗi xảy ra");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -48,7 +71,7 @@ const Register = () => {
         {/* Full Name */}
         <Form.Item
           label="Họ và tên"
-          name="fullName"
+          name="name"
           rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
         >
           <Input
@@ -69,32 +92,6 @@ const Register = () => {
         >
           <Input
             placeholder="Nhập email"
-            size="large"
-            style={{ borderRadius: 8 }}
-          />
-        </Form.Item>
-
-        {/* Phone Number */}
-        <Form.Item
-          label="Số điện thoại"
-          name="phoneNumber"
-          rules={[{ required: true, message: "Vui lòng nhập số điện thoại" }]}
-        >
-          <Input
-            placeholder="Nhập số điện thoại"
-            size="large"
-            style={{ borderRadius: 8 }}
-          />
-        </Form.Item>
-
-        {/* Address */}
-        <Form.Item
-          label="Địa chỉ"
-          name="address"
-          rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
-        >
-          <Input
-            placeholder="Nhập địa chỉ"
             size="large"
             style={{ borderRadius: 8 }}
           />
@@ -150,6 +147,7 @@ const Register = () => {
             size="large"
             block
             style={{ borderRadius: 8, backgroundColor: COLOR_DEFAULT }}
+            loading={loading}
           >
             Đăng ký
           </Button>

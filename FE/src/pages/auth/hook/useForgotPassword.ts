@@ -2,7 +2,6 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { showError, showSuccess, showWarning } from "../../../untils/ShowToast";
 import { SendOtpForgotPasswordAuth } from "../../../api/auth/auth.api";
-import { formatParams } from "../../../untils/formatParams";
 export const useForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -14,11 +13,8 @@ export const useForgotPassword = () => {
       try {
         const res = await SendOtpForgotPasswordAuth(values);
         if (res?.success) {
-          showSuccess("OTP đã được gửi về email của bạn");
-          const query = formatParams(values);
-          navigate(`/auth/otp-verify-forgot-password${query}`, {
-            replace: true,
-          });
+          showSuccess("Thông tin xác minh đã được gửi về email của bạn!");
+          navigate("/");
         } else {
           showWarning(res?.message);
         }

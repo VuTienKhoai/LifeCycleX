@@ -2,6 +2,7 @@
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import Login from "../pages/auth/Login";
 import OtpVerifyForgotPassword from "../pages/auth/OtpVerifyForgotPassword";
+import OtpVerifyRegister from "../pages/auth/OtpVerifyRegister";
 import Register from "../pages/auth/Register";
 import ResetPassword from "../pages/auth/ResetPassword";
 
@@ -15,6 +16,10 @@ export const AuthMainRoutes = [
       {
         path: "otp-verify-forgot-password",
         element: <OtpVerifyForgotPassword />,
+      },
+      {
+        path: "verify-otp",
+        element: <OtpVerifyRegister />,
       },
       {
         path: "reset-password",

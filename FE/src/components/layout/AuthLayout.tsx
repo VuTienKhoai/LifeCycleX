@@ -1,6 +1,6 @@
 import { Col, Row } from "antd";
 import type { ReactNode } from "react";
-import backgroundBanner from "../../assets/img/logo/background_authen.webp";
+import backgroundBanner from "../../assets/img/logo/background_authen_v2.webp";
 
 interface AuthLayoutProps {
   children: ReactNode;

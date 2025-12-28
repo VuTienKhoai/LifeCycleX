@@ -1,17 +1,8 @@
 import axios from "axios";
-import { resetLogin } from "../features/slices/app.slice";
-import { store } from "../features/store";
 import { APP_URL } from "../constants/Url";
 
+// ✅ Request interceptor — không còn thêm Bearer
 const handleRequest = (config: any) => {
-  const storeState = store.getState();
-  const access_token =
-    storeState.app.token || localStorage.getItem("access_token");
-
-  if (access_token && config.headers) {
-    config.headers["Authorization"] = `Bearer ${access_token}`;
-  }
-
   // Để axios tự throw lỗi nếu ngoài 200–299
   config.validateStatus = (status: number) => {
     return status >= 200 && status < 300;
@@ -24,26 +15,13 @@ const handleRequestError = (error: any) => {
   return Promise.reject(error);
 };
 
+// ✅ Response interceptor
 const handleResponse = (response: any) => {
   return response.data;
 };
 
 const handleResponseError = async (error: any) => {
   console.error("axios error:", error);
-
-  if (error.response?.status === 401) {
-    const dispatch = store.dispatch;
-    dispatch(resetLogin());
-    localStorage.removeItem("access_token");
-
-    // ⚠️ Tránh redirect vòng lặp nếu đang ở chính trang login
-    if (!window.location.pathname.startsWith("/auth/login")) {
-      window.location.href = "/auth/login";
-    }
-
-    return;
-  }
-
   return Promise.reject(error.response?.data || error);
 };
 
@@ -60,6 +38,7 @@ export const axiosClientFile = axios.create({
   headers: {
     "Content-Type": "multipart/form-data",
   },
+  withCredentials: true,
 });
 
 export const axiosClientNoAuth = axios.create({

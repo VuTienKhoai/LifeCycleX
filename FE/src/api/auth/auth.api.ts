@@ -7,7 +7,7 @@ import type {
 import { formatParams } from "../../untils/formatParams";
 
 export const LoginAuth = (body: any): Promise<IMethodResult<any>> => {
-  const url = `/Auth/Login`;
+  const url = `/auth/login`;
   return axiosClientNoAuth.post(url, body);
 };
 
@@ -20,11 +20,10 @@ export const ResendOtpForgotPasswordAuth = (
 };
 
 export const SendOtpForgotPasswordAuth = (
-  params: any
+  body: any
 ): Promise<IMethodResult<any>> => {
-  const query = formatParams(params);
-  const url = `/Auth/SendOtpForgotPassword${query}`;
-  return axiosClientNoAuth.post(url);
+  const url = `/auth/send-reset-password`;
+  return axiosClientNoAuth.post(url, body);
 };
 
 export const VerifyOtpForgotPasswordAuth = (
@@ -38,5 +37,10 @@ export const ForgotPassworrdAuth = (
   body: IForgotPassword
 ): Promise<IMethodResult<any>> => {
   const url = `/Auth/ForgotPassword`;
+  return axiosClientNoAuth.post(url, body);
+};
+
+export const registerAuth = (body: any): Promise<IMethodResult<any>> => {
+  const url = `/auth/register`;
   return axiosClientNoAuth.post(url, body);
 };
